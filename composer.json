@@ -1,0 +1,17 @@
+{
+    "name": "tillmannschiffler/simplequeue",
+    "autoload": {
+        "psr-4": {
+            "simpleQueue\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Tillmann Schiffler",
+            "email": "tillmann.schiffler@gmail.com"
+        }
+    ],
+    "require": {
+        "phpstan/phpstan": "^1.9"
+    }
+}
