@@ -5,7 +5,7 @@ use simpleQueue\Infrastructure\JobFileHandler;
 use simpleQueue\Job\Processor;
 
 require_once __DIR__ . '/../vendor/autoload.php';
-echo 'SDF';
+
 $jobFileHandler = new JobFileHandler(
     Directory::fromString(__DIR__ . '/../queue/inbox')
 );
