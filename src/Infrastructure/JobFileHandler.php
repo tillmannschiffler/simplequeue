@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace simpleQueue\Infrastructure;
 
 use simpleQueue\Job\Job;
-use simpleQueue\Job\JobId;
 use simpleQueue\Job\JobPayload;
 use simpleQueue\Job\OrderId;
 
@@ -18,6 +17,7 @@ class JobFileHandler
     {
         $this->directory = $directory;
     }
+    
 
     public function retrieve() : ?Job
     {
@@ -28,7 +28,7 @@ class JobFileHandler
         
         return $this->read(
             Filename::fromString(
-            $this->directory->toString() . '/' . $this->oldestFromDir()->toString()
+                $this->directory->toString() . '/' . $jobFile->toString()
             )
         );
     }

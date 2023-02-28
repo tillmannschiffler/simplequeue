@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-
 namespace simpleQueue\Job;
-
 
 class JobId
 {
