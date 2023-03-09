@@ -11,7 +11,7 @@
             "email": "tillmann.schiffler@gmail.com"
         }
     ],
-    "require": {
-        "phpstan/phpstan": "^1.9"
+    "require-dev": {
+        "phpunit/phpunit": "^10.0"
     }
 }

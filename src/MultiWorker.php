@@ -1,24 +1,31 @@
-<?php declare(strict_types=1);
+<?php 
 
+declare(strict_types=1);
+
+use simpleQueue\Configuration\Configuraton;
+use simpleQueue\Factory;
 use simpleQueue\Infrastructure\Directory;
-use simpleQueue\Infrastructure\JobFileHandler;
-use simpleQueue\Job\Processor;
+use simpleQueue\Infrastructure\JobWriter;
+use simpleQueue\Job\SampleProcessor;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $directory = Directory::fromString(__DIR__ . '/../queue/inbox');
-$jobFileHandler = new JobFileHandler($directory);
+$jobFileHandler = new JobWriter($directory);
+$factory = new Factory(new Configuraton());
+
+$jobFileHandler = $factory->createJobReader();
+$jobFileMover = $factory->createJobMover();
+$processorLocator = $factory->createProcessorLocator();
 
 
 $pidList = [];
-$jobCollection =[
-'72532079-d85e-4ec3-bf92-9c00d6f6ca68',  
-'93e4b61b-76b8-4de4-acef-648cac02d2cf',
-'81721e69-8e7b-498d-9686-03542ed8a732',    
-]; 
+
+$jobCollection = $jobFileHandler->retrieveAllJobs();
 
 
-foreach ($jobCollection as $jobId) {
+/** @var simpleQueue\Job\Job $job */
+foreach ($jobCollection->all() as $job) {
     $pid = pcntl_fork();
     if ($pid == -1) {
         die('Konnte nicht verzweigen');
@@ -26,17 +33,14 @@ foreach ($jobCollection as $jobId) {
         $pidList[] = $pid;
     } else {
         try {
-            $job = $jobFileHandler->retrieve($jobId);
 
-            if (is_null($job))
-                die();
-
-            $processor = new Processor();
+            $processor = $processorLocator->getProcessorFor($job->getJobType());
             $processor->execute($job);
-            $jobFileHandler->moveToFinished();
+            $jobFileMover->moveToFinished($job);
         } catch (Exception $exception) {
-            $jobFileHandler->moveToFailed();
+            $jobFileMover->moveToFailed($job);
         }
+        exit;
     }
 }
 
