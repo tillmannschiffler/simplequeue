@@ -12,6 +12,11 @@ use simpleQueue\Job\JobType;
 class JobReader
 {
     private Directory $directory;
+    private array $ignoreFiles = [
+        '.',        
+        '..',        
+        '.gitkeep',        
+    ];
 
     public function __construct(Directory $directory)
     {
@@ -33,7 +38,7 @@ class JobReader
         $jobCollection = new JobCollection();
 
         foreach (scandir($this->directory->toString()) as $file) {
-            if ($file === '.' || $file === '..')
+            if (in_array($file, $this->ignoreFiles))
                 continue;
 
             $jobCollection->add(
@@ -52,7 +57,7 @@ class JobReader
         $file = null;
 
         foreach (scandir($this->directory->toString()) as $file) {
-            if ($file === '.' || $file === '..')
+            if (in_array($file, $this->ignoreFiles))
                 continue;
 
             $file_time = filemtime($this->directory->toString() . '/' . $file);
