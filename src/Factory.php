@@ -32,10 +32,13 @@ class Factory
     {
         return new SingleProcessingStrategy($this->createExecutor());
     }
-
-    public function createForkingProcessingStrategy(): ForkingProcessingStrategy 
+    
+    public function createForkingProcessingStrategy(): ForkingProcessingStrategy
     {
-        return new ForkingProcessingStrategy($this->createExecutor());
+        return new ForkingProcessingStrategy(
+            $this->createExecutor(), 
+            $this->configuraton->getMaxForkChilds()
+        );
     }
 
     public function createExecutor():Executor

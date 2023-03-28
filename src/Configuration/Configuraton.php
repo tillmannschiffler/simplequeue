@@ -8,6 +8,11 @@ use simpleQueue\Infrastructure\Directory;
 
 class Configuraton
 {
+    public function getMaxForkChilds() : int
+    {
+        return 5;
+    }
+    
     public function getInboxDirectory() : Directory
     {
         return Directory::fromString(__DIR__ . '/../../queue/inbox');
