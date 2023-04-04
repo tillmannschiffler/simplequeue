@@ -5,19 +5,20 @@ declare(strict_types=1);
 namespace simpleQueue;
 
 use simpleQueue\Configuration\Configuraton;
-
+use simpleQueue\Event\Clock;
+use simpleQueue\Event\LogEmmitter;
 use simpleQueue\Example\SampleProcessorLocator;
 use simpleQueue\Infrastructure\Executor;
 use simpleQueue\Infrastructure\ForkingProcessingStrategy;
 use simpleQueue\Infrastructure\JobMover;
-use simpleQueue\Infrastructure\JobWriter;
 use simpleQueue\Infrastructure\JobReader;
-use simpleQueue\Infrastructure\ProcessorLocator;
+use simpleQueue\Infrastructure\JobWriter;
 use simpleQueue\Infrastructure\SingleProcessingStrategy;
 use simpleQueue\Infrastructure\Uuid;
 use simpleQueue\Job\Job;
 use simpleQueue\Job\JobPayload;
 use simpleQueue\Job\JobType;
+use simpleQueue\Job\ProcessorLocator;
 
 class Factory
 {
@@ -37,7 +38,8 @@ class Factory
     {
         return new ForkingProcessingStrategy(
             $this->createExecutor(), 
-            $this->configuraton->getMaxForkChilds()
+            $this->configuraton->getMaxForkChilds(),
+            $this->createEmitter()
         );
     }
 
@@ -79,6 +81,13 @@ class Factory
             Uuid::create(),
             $jobType,
             $jobPayload
+        );
+    }
+
+    public function createEmitter() : LogEmmitter
+    {
+        return new LogEmmitter(
+            new Clock()
         );
     }
 }

@@ -21,6 +21,8 @@ Here comes this package that aims to be as small as possible but deliver the imp
 - parallel jobs 
 - event driven
 
+All this features could be archieved by using the most basic storage aka files system with some leverage of systemd.
+
 Systemd uses unit files to configure daemons, and path units monitor files and directories for events. When a specified event occurs, a service unit with the same name is executed. I'll demonstrate this with an example. So the concept is to create files in a specific directory and let systemd handle the starting event condition and keep that one unit running to avoid ccidentally multiple executions of one job. 
 
 ## Requirements ##
