@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace simpleQueue\Infrastructure;
+namespace simpleQueue\Job;
 
 use simpleQueue\Job\Job;
 

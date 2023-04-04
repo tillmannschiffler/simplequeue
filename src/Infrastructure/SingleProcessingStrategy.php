@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace simpleQueue\Infrastructure;
 
 use simpleQueue\Job\JobCollection;
+use simpleQueue\Job\ProcessingStrategy;
 
 class SingleProcessingStrategy implements ProcessingStrategy
 {
