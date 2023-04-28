@@ -35,7 +35,7 @@ Systemd uses unit files to configure daemons, and path units monitor files and d
 To use this library install with:
 
 ```bash
-composer require --dev vimeo/psalm
+composer require tillmannschiffler/simplequeue
 ```
 
 To get started with this system, you can begin by making changes to the example files located at /src/Example. These files can be modified to suit your specific needs. For instance, you can customize the Sample Processor according to your desired functionality.
