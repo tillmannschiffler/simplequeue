@@ -34,7 +34,9 @@ Systemd uses unit files to configure daemons, and path units monitor files and d
 
 To use this library install with:
 
-    composer require tillmannschiffler/simplequeue
+```bash
+composer require --dev vimeo/psalm
+```
 
 To get started with this system, you can begin by making changes to the example files located at /src/Example. These files can be modified to suit your specific needs. For instance, you can customize the Sample Processor according to your desired functionality.
 
@@ -81,3 +83,5 @@ And of course start it:
 To create a job, you have two options: you can either create the job manually and move it to /queue/inbox, or you can make use of the helper file located at /src/Example/CreateSomeJobs.php. This file can help you generate jobs quickly and easily.
 
 Once you have created the job, and  you can proceed to test the system by running /src/Example/SingleWorker.php. This will help you ensure that the setup is working as intended. If there are any issues, you can debug the system accordingly. With this simple setup process, you can get started with using this system in no time at all.
+
+Please feel free to mail me with ideas or bugs you found <tillmann.schiffler@gmail.com>
