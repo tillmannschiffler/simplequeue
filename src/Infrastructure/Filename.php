@@ -16,11 +16,12 @@ class Filename
 
     private function ensureIsValid(string $filename): void
     {
-        if (!self::isValid($filename))
+        if (! self::isValid($filename)) {
             throw new \InvalidArgumentException(sprintf(
                 'Provided value not valid: %s',
                 $filename
             ));
+        }
     }
 
     public function toString(): string
@@ -31,8 +32,9 @@ class Filename
     public static function isValid(string $filename): bool
     {
         //TODO: remove or implement validation rules
-        if (!is_string($filename))
+        if (! is_string($filename)) {
             return false;
+        }
 
         return true;
     }
@@ -41,5 +43,4 @@ class Filename
     {
         return new self($filename);
     }
-    
 }

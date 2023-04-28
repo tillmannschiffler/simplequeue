@@ -16,11 +16,12 @@ class Directory
 
     private function ensureIsValid(string $directory): void
     {
-        if (!self::isValid($directory))
+        if (! self::isValid($directory)) {
             throw new \InvalidArgumentException(sprintf(
                 'Provided value not valid: %s',
                 $directory
             ));
+        }
     }
 
     public function toString(): string
@@ -31,8 +32,9 @@ class Directory
     public static function isValid(string $directory): bool
     {
         //TODO: remove or implement validation rules
-        if (!is_string($directory))
+        if (! is_string($directory)) {
             return false;
+        }
 
         return true;
     }

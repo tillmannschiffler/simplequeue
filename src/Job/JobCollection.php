@@ -16,7 +16,7 @@ class JobCollection
     /**
      * @return Job[]
      */
-    public function all() : array
+    public function all(): array
     {
         return $this->items;
     }

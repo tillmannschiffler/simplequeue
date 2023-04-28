@@ -11,7 +11,9 @@ use simpleQueue\Job\ProcessingStrategy;
 class ForkingProcessingStrategy implements ProcessingStrategy
 {
     private Executor $executor;
+
     private int $maxForks;
+
     private LogEmmitter $logEmmitter;
 
     public function __construct(Executor $executor, int $maxForks, LogEmmitter $logEmmitter)
@@ -30,7 +32,9 @@ class ForkingProcessingStrategy implements ProcessingStrategy
                 foreach ($pidList as $pos => $pId) {
                     $code = pcntl_waitpid($pId, $status, WNOHANG);
 
-                    if ($code === 0) continue;
+                    if ($code === 0) {
+                        continue;
+                    }
                     unset($pidList[$pos]);
                     unset($joblist[$pId]);
                     break;
@@ -42,8 +46,8 @@ class ForkingProcessingStrategy implements ProcessingStrategy
             $pid = pcntl_fork();
             if ($pid == -1) {
                 $this->logEmmitter->emmitCouldNotFork();
-                die('Could not fork');
-            } else if ($pid) {
+                exit('Could not fork');
+            } elseif ($pid) {
                 $pidList[] = $pid;
                 $joblist[$pid] = $job;
             } else {
@@ -54,11 +58,13 @@ class ForkingProcessingStrategy implements ProcessingStrategy
             }
         }
 
-        while (!empty($pidList)) {
+        while (! empty($pidList)) {
             foreach ($pidList as $pos => $pId) {
                 $code = pcntl_waitpid($pId, $status, WNOHANG);
 
-                if ($code === 0) continue;
+                if ($code === 0) {
+                    continue;
+                }
                 unset($pidList[$pos]);
                 unset($joblist[$pId]);
             }

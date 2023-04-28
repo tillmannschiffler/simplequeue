@@ -6,7 +6,7 @@ namespace simpleQueue\Job;
 
 class JobType
 {
-    private $jobType;
+    private string $jobType;
 
     private function __construct(string $jobType)
     {
@@ -16,11 +16,12 @@ class JobType
 
     private function ensureIsValid(string $jobType): void
     {
-        if (!self::isValid($jobType))
+        if (! self::isValid($jobType)) {
             throw new \InvalidArgumentException(sprintf(
                 'Provided value not valid: %s',
                 $jobType
             ));
+        }
     }
 
     public function toString(): string
@@ -31,8 +32,9 @@ class JobType
     public static function isValid(string $jobType): bool
     {
         //TODO: remove or implement validation rules
-        if (!is_string($jobType))
+        if (! is_string($jobType)) {
             return false;
+        }
 
         return true;
     }

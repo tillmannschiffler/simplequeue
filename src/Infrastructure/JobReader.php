@@ -12,10 +12,11 @@ use simpleQueue\Job\JobType;
 class JobReader
 {
     private Directory $directory;
+
     private array $ignoreFiles = [
-        '.',        
-        '..',        
-        '.gitkeep',        
+        '.',
+        '..',
+        '.gitkeep',
     ];
 
     public function __construct(Directory $directory)
@@ -27,8 +28,9 @@ class JobReader
     {
         $jobFile = $this->oldestFromDir();
 
-        if (is_null($jobFile))
+        if (is_null($jobFile)) {
             return null;
+        }
 
         return $this->read($jobFile);
     }
@@ -38,15 +40,16 @@ class JobReader
         $jobCollection = new JobCollection();
 
         foreach (scandir($this->directory->toString()) as $file) {
-            if (in_array($file, $this->ignoreFiles))
+            if (in_array($file, $this->ignoreFiles)) {
                 continue;
+            }
 
             $jobCollection->add(
-                $this->read(Filename::fromString($this->directory->toString() . '/' . $file))
+                $this->read(Filename::fromString($this->directory->toString().'/'.$file))
             );
-            
+
         }
-        
+
         return $jobCollection;
     }
 
@@ -57,38 +60,43 @@ class JobReader
         $file = null;
 
         foreach (scandir($this->directory->toString()) as $file) {
-            if (in_array($file, $this->ignoreFiles))
+            if (in_array($file, $this->ignoreFiles)) {
                 continue;
+            }
 
-            $file_time = filemtime($this->directory->toString() . '/' . $file);
+            $file_time = filemtime($this->directory->toString().'/'.$file);
             if ($file_time < $oldest_time) {
                 $oldest_file = $file;
                 $oldest_time = $file_time;
             }
         }
 
-        if (is_null($oldest_file))
+        if (is_null($oldest_file)) {
             return null;
+        }
 
-        return Filename::fromString($this->directory->toString() . '/' . $file);
+        return Filename::fromString($this->directory->toString().'/'.$file);
     }
 
     private function read(Filename $file): Job
     {
         $content = file_get_contents($file->toString());
-        if (!$content)
+        if (! $content) {
             throw new \InvalidArgumentException('Job File could not be read.');
+        }
 
         $decodetContent = json_decode($content);
-        if (is_null($decodetContent))
+        if (is_null($decodetContent)) {
             throw new JobInfrastructureException(json_last_error_msg());
+        }
 
-
-        if (!isset($decodetContent->jobId))
+        if (! isset($decodetContent->jobId)) {
             throw new JobInfrastructureException('Missing job id in job file.');
+        }
 
-        if (!isset($decodetContent->jobPayload))
+        if (! isset($decodetContent->jobPayload)) {
             throw new JobInfrastructureException('Missing payload id in job file.');
+        }
 
         return new Job(
             Uuid::fromString($decodetContent->jobId),
@@ -96,5 +104,4 @@ class JobReader
             JobPayload::fromString($decodetContent->jobPayload)
         );
     }
-    
 }

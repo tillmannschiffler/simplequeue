@@ -9,7 +9,9 @@ use simpleQueue\Infrastructure\Uuid;
 class Job
 {
     private Uuid $jobId;
+
     private JobPayload $jobPayload;
+
     private JobType $jobType;
 
     public function __construct(Uuid $jobId, JobType $jobType, JobPayload $jobPayload)
@@ -19,9 +21,6 @@ class Job
         $this->jobType = $jobType;
     }
 
-    /**
-     * @return JobType
-     */
     public function getJobType(): JobType
     {
         return $this->jobType;
@@ -41,8 +40,8 @@ class Job
     {
         return json_encode(
             [
-                'jobId'         => $this->jobId->toString(),
-                'jobPayload'    => $this->jobPayload->toString()    
+                'jobId' => $this->jobId->toString(),
+                'jobPayload' => $this->jobPayload->toString(),
             ]
         );
     }

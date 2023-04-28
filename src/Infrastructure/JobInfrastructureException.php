@@ -6,5 +6,4 @@ namespace simpleQueue\Infrastructure;
 
 class JobInfrastructureException extends \Exception
 {
-
 }

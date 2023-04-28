@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace simpleQueue\Infrastructure;
 
 use simpleQueue\Job\Job;
-use simpleQueue\Job\OrderId;
 
 class JobWriter
 {
@@ -19,10 +18,11 @@ class JobWriter
     public function store(Job $job): void
     {
         $writeResult = file_put_contents(
-            $this->inboxDirectory->toString() . '/' . $job->getJobId()->toString(),
+            $this->inboxDirectory->toString().'/'.$job->getJobId()->toString(),
             $job->toJson());
-         
-        if ($writeResult === false)
+
+        if ($writeResult === false) {
             throw new JobInfrastructureException('could not store job file.');
+        }
     }
 }

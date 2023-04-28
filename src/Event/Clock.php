@@ -6,7 +6,7 @@ namespace simpleQueue\Event;
 
 class Clock
 {
-    public function now() : \DateTimeImmutable
+    public function now(): \DateTimeImmutable
     {
         return new \DateTimeImmutable('now');
     }

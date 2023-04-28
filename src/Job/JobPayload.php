@@ -16,11 +16,12 @@ class JobPayload
 
     private function ensureIsValid(string $jobPayload): void
     {
-        if (!self::isValid($jobPayload))
+        if (! self::isValid($jobPayload)) {
             throw new \InvalidArgumentException(sprintf(
                 'Provided value not valid: %s',
                 $jobPayload
             ));
+        }
     }
 
     public function toString(): string
@@ -31,8 +32,9 @@ class JobPayload
     public static function isValid(string $jobPayload): bool
     {
         //TODO: remove or implement validation rules
-        if (!is_string($jobPayload))
+        if (! is_string($jobPayload)) {
             return false;
+        }
 
         return true;
     }

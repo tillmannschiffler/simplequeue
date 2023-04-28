@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-use simpleQueue\Configuration\Configuraton;
+use simpleQueue\Configuration\Configuration;
 use simpleQueue\Factory;
 use simpleQueue\Infrastructure\Logger\SimpleConsoleLogger;
 
-require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__.'/../../vendor/autoload.php';
 
-$factory = new Factory(new Configuraton());
+$factory = new Factory(new Configuration());
 
 $processingStrategy = $factory->createForkingProcessingStrategy();
 $processingStrategy->getLogEmmitter()->addSubscriber(new SimpleConsoleLogger());

@@ -6,7 +6,7 @@ namespace simpleQueue\Event;
 
 use simpleQueue\Job\Job;
 
-class FinishedJob implements Event
+class StartedExecutor implements Event
 {
     private Job $job;
 

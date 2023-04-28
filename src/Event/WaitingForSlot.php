@@ -8,12 +8,11 @@ class WaitingForSlot implements Event
 {
     private \DateTimeImmutable $dateTimeImmutable;
 
-
     public function __construct(\DateTimeImmutable $dateTimeImmutable)
     {
         $this->dateTimeImmutable = $dateTimeImmutable;
     }
-    
+
     public function getDateTimeImmutable(): \DateTimeImmutable
     {
         return $this->dateTimeImmutable;

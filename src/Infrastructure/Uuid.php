@@ -22,7 +22,7 @@ class Uuid
     {
         return new self($uuid);
     }
-    
+
     public static function create(): self
     {
         return new self(trim(file_get_contents('/proc/sys/kernel/random/uuid')));

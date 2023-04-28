@@ -9,8 +9,8 @@ use simpleQueue\Job\Job;
 class StartedJob implements Event
 {
     private Job $job;
-    private \DateTimeImmutable $dateTimeImmutable;
 
+    private \DateTimeImmutable $dateTimeImmutable;
 
     public function __construct(Job $job, \DateTimeImmutable $dateTimeImmutable)
     {
@@ -18,21 +18,13 @@ class StartedJob implements Event
         $this->dateTimeImmutable = $dateTimeImmutable;
     }
 
-    /**
-     * @return Job
-     */
     public function getJob(): Job
     {
         return $this->job;
     }
 
-    /**
-     * @return \DateTimeImmutable
-     */
     public function getDateTimeImmutable(): \DateTimeImmutable
     {
         return $this->dateTimeImmutable;
     }
-    
-    
 }

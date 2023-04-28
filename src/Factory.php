@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace simpleQueue;
 
-use simpleQueue\Configuration\Configuraton;
+use simpleQueue\Configuration\Configuration;
 use simpleQueue\Event\Clock;
 use simpleQueue\Event\LogEmmitter;
 use simpleQueue\Example\SampleProcessorLocator;
@@ -22,41 +22,34 @@ use simpleQueue\Job\ProcessorLocator;
 
 class Factory
 {
-    private Configuraton $configuraton;
+    private Configuration $configuraton;
 
-    public function __construct(Configuraton $configuraton)
+    public function __construct(Configuration $configuraton)
     {
         $this->configuraton = $configuraton;
     }
     
-    public function createSingleProcessingStrategy(): SingleProcessingStrategy
-    {
-        return new SingleProcessingStrategy($this->createExecutor());
-    }
-    
     public function createForkingProcessingStrategy(): ForkingProcessingStrategy
     {
+        $logEmitter = $this->createLogEmitter();
+
         return new ForkingProcessingStrategy(
-            $this->createExecutor(), 
+            new Executor(
+                $this->createProcessorLocator(),
+                $this->createJobMover(),
+                $logEmitter
+            ),
             $this->configuraton->getMaxForkChilds(),
-            $this->createEmitter()
+            $logEmitter
         );
     }
 
-    public function createExecutor():Executor
-    {
-        return new Executor(
-            $this->createProcessorLocator(),
-            $this->createJobMover()
-        );
-    }
-
-    public function createJobReader() : JobReader
+    public function createJobReader(): JobReader
     {
         return new JobReader($this->configuraton->getInboxDirectory());
     }
-    
-    public function createJobMover() : JobMover
+
+    public function createJobMover(): JobMover
     {
         return new JobMover(
             $this->configuraton->getInboxDirectory(),
@@ -65,7 +58,7 @@ class Factory
         );
     }
 
-    public function createJobWriter() : JobWriter
+    public function createJobWriter(): JobWriter
     {
         return new JobWriter($this->configuraton->getInboxDirectory());
     }
@@ -75,7 +68,7 @@ class Factory
         return new SampleProcessorLocator();
     }
 
-    public function createJob(JobType $jobType, JobPayload $jobPayload) : Job
+    public function createJob(JobType $jobType, JobPayload $jobPayload): Job
     {
         return new Job(
             Uuid::create(),
@@ -84,7 +77,7 @@ class Factory
         );
     }
 
-    public function createEmitter() : LogEmmitter
+    public function createLogEmitter(): LogEmmitter
     {
         return new LogEmmitter(
             new Clock()

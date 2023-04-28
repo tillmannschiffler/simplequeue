@@ -15,11 +15,10 @@ class SingleProcessingStrategy implements ProcessingStrategy
     {
         $this->executor = $executor;
     }
-    
+
     public function process(JobCollection $jobs): void
     {
-        foreach ($jobs->all() as $job) 
-        {
+        foreach ($jobs->all() as $job) {
             $this->executor->process($job);
         }
     }
