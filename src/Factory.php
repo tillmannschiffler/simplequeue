@@ -6,7 +6,7 @@ namespace simpleQueue;
 
 use simpleQueue\Configuration\Configuration;
 use simpleQueue\Event\Clock;
-use simpleQueue\Event\LogEmmitter;
+use simpleQueue\Event\LogEmitter;
 use simpleQueue\Example\SampleProcessorLocator;
 use simpleQueue\Infrastructure\Executor;
 use simpleQueue\Infrastructure\ForkingProcessingStrategy;
@@ -77,9 +77,9 @@ class Factory
         );
     }
 
-    public function createLogEmitter(): LogEmmitter
+    public function createLogEmitter(): LogEmitter
     {
-        return new LogEmmitter(
+        return new LogEmitter(
             new Clock()
         );
     }
