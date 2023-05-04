@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace simpleQueue\Infrastructure;
 
-use simpleQueue\Event\LogEmmitter;
+use simpleQueue\Event\LogEmitter;
 use simpleQueue\Job\JobCollection;
 use simpleQueue\Job\ProcessingStrategy;
 
@@ -14,13 +14,13 @@ class ForkingProcessingStrategy implements ProcessingStrategy
 
     private int $maxForks;
 
-    private LogEmmitter $logEmmitter;
+    private LogEmitter $logEmitter;
 
-    public function __construct(Executor $executor, int $maxForks, LogEmmitter $logEmmitter)
+    public function __construct(Executor $executor, int $maxForks, LogEmitter $logEmitter)
     {
         $this->executor = $executor;
         $this->maxForks = $maxForks;
-        $this->logEmmitter = $logEmmitter;
+        $this->logEmitter = $logEmitter;
     }
 
     public function process(JobCollection $jobs): void
@@ -40,20 +40,20 @@ class ForkingProcessingStrategy implements ProcessingStrategy
                     break;
 
                 }
-                $this->logEmmitter->emmitWaitingForSlot();
+                $this->logEmitter->emitWaitingForSlot();
                 sleep(1);
             }
             $pid = pcntl_fork();
             if ($pid == -1) {
-                $this->logEmmitter->emmitCouldNotFork();
+                $this->logEmitter->emitCouldNotFork();
                 exit('Could not fork');
             } elseif ($pid) {
                 $pidList[] = $pid;
                 $joblist[$pid] = $job;
             } else {
-                $this->logEmmitter->emmitStartedJob($job);
+                $this->logEmitter->emitStartedJob($job);
                 $this->executor->process($job);
-                $this->logEmmitter->emmitFinishedJob($job);
+                $this->logEmitter->emitFinishedJob($job);
                 exit;
             }
         }
@@ -72,8 +72,8 @@ class ForkingProcessingStrategy implements ProcessingStrategy
         }
     }
 
-    public function getLogEmmitter(): LogEmmitter
+    public function getLogEmitter(): LogEmitter
     {
-        return $this->logEmmitter;
+        return $this->logEmitter;
     }
 }

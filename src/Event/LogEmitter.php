@@ -7,7 +7,7 @@ namespace simpleQueue\Event;
 use simpleQueue\Infrastructure\Logger\Subscriber;
 use simpleQueue\Job\Job;
 
-class LogEmmitter
+class LogEmitter
 {
     private array $subscriber = [];
 
@@ -23,27 +23,27 @@ class LogEmmitter
         $this->subscriber[] = $subscriber;
     }
 
-    public function emmitWaitingForSlot(): void
+    public function emitWaitingForSlot(): void
     {
         $this->publish(new WaitingForSlot($this->clock->now()));
     }
 
-    public function emmitFinishedJob(Job $job): void
+    public function emitFinishedJob(Job $job): void
     {
         $this->publish(new FinishedJob($job, $this->clock->now()));
     }
 
-    public function emmitStartedJob(Job $job): void
+    public function emitStartedJob(Job $job): void
     {
         $this->publish(new StartedJob($job, $this->clock->now()));
     }
 
-    public function emmitStartedExecutor(Job $job): void
+    public function emitStartedExecutor(Job $job): void
     {
         $this->publish(new StartedExecutor($job, $this->clock->now()));
     }
 
-    public function emmitCouldNotFork()
+    public function emitCouldNotFork()
     {
         $this->publish(new CouldNotFork($this->clock->now()));
     }

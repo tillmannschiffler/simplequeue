@@ -11,5 +11,8 @@ require_once __DIR__.'/../../vendor/autoload.php';
 $factory = new Factory(new Configuration());
 
 $processingStrategy = $factory->createForkingProcessingStrategy();
-$processingStrategy->getLogEmmitter()->addSubscriber(new SimpleConsoleLogger());
+
+$processingStrategy->getLogEmitter()->addSubscriber(new SimpleConsoleLogger());
+
+
 $processingStrategy->process(($factory->createJobReader())->retrieveAllJobs());

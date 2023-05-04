@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace simpleQueue\Infrastructure;
 
-use simpleQueue\Event\LogEmmitter;
+use simpleQueue\Event\LogEmitter;
 use simpleQueue\Job\Job;
 use simpleQueue\Job\ProcessorLocator;
 
@@ -14,19 +14,19 @@ class Executor
 
     private JobMover $jobMover;
 
-    private LogEmmitter $logEmmitter;
+    private LogEmitter $logEmitter;
 
-    public function __construct(ProcessorLocator $processorLocator, JobMover $jobMover, LogEmmitter $logEmmitter)
+    public function __construct(ProcessorLocator $processorLocator, JobMover $jobMover, LogEmitter $logEmitter)
     {
         $this->processorLocator = $processorLocator;
         $this->jobMover = $jobMover;
-        $this->logEmmitter = $logEmmitter;
+        $this->logEmitter = $logEmitter;
     }
 
     public function process(Job $job): void
     {
         try {
-            $this->logEmmitter->emmitStartedExecutor($job);
+            $this->logEmitter->emitStartedExecutor($job);
             $processor = $this->processorLocator->getProcessorFor($job->getJobType());
             $processor->execute($job);
             $this->jobMover->moveToFinished($job);
