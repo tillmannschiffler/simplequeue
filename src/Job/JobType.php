@@ -35,6 +35,10 @@ class JobType
         if (! is_string($jobType)) {
             return false;
         }
+        
+        if (strlen($jobType) == 0) {
+            return false;
+        }
 
         return true;
     }

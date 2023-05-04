@@ -35,6 +35,10 @@ class Directory
         if (! is_string($directory)) {
             return false;
         }
+        
+        if (!is_dir($directory)) {
+            return false;
+        }
 
         return true;
     }

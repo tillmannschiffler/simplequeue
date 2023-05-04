@@ -18,7 +18,7 @@ use simpleQueue\Job\JobType;
  * @covers \simpleQueue\Factory
  * @covers \simpleQueue\Infrastructure\ForkingProcessingStrategy
  * @covers \simpleQueue\Infrastructure\Executor
- * @covers \simpleQueue\Event\LogEmmitter
+ * @covers \simpleQueue\Event\LogEmitter
  * @covers \simpleQueue\Job\JobCollection
  * @covers \simpleQueue\Infrastructure\JobMover
  * @covers \simpleQueue\Infrastructure\JobReader
@@ -63,7 +63,7 @@ class SimpleQueueTest extends TestCase
 
         $consoleLoggerMock = $this->createMock(SimpleConsoleLogger::class);
         $processingStrategy = $this->factory->createForkingProcessingStrategy();
-        $processingStrategy->getLogEmmitter()->addSubscriber($consoleLoggerMock);
+        $processingStrategy->getLogEmitter()->addSubscriber($consoleLoggerMock);
         $processingStrategy->process(($this->factory->createJobReader())->retrieveAllJobs());
 
         $this->assertTrue(file_exists(__DIR__.'/../queue/finished/'.$this->jobId));
