@@ -18,7 +18,6 @@ use simpleQueue\Job\JobType;
  * @covers \simpleQueue\Infrastructure\ForkingProcessingStrategy
  * @covers \simpleQueue\Infrastructure\Executor
  * @covers \simpleQueue\Event\LogEmitter
- * @covers \simpleQueue\Job\JobCollection
  * @covers \simpleQueue\Infrastructure\JobMover
  * @covers \simpleQueue\Infrastructure\JobReader
  * @covers \simpleQueue\Infrastructure\Directory
