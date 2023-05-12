@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace simpleQueue\Infrastructure;
 
-use simpleQueue\Job\JobCollection;
+use simpleQueue\Job\Job;
 use simpleQueue\Job\ProcessingStrategy;
+use Traversable;
 
 class SingleProcessingStrategy implements ProcessingStrategy
 {
@@ -16,9 +17,12 @@ class SingleProcessingStrategy implements ProcessingStrategy
         $this->executor = $executor;
     }
 
-    public function process(JobCollection $jobs): void
+    /**
+     * @param  Traversable<Job>  $jobs
+     */
+    public function process(Traversable $jobs): void
     {
-        foreach ($jobs->all() as $job) {
+        foreach ($jobs as $job) {
             $this->executor->process($job);
         }
     }
