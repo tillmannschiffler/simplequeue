@@ -32,10 +32,6 @@ class Directory
     public static function isValid(string $directory): bool
     {
         //TODO: remove or implement validation rules
-        if (! is_string($directory)) {
-            return false;
-        }
-
         if (! is_dir($directory)) {
             return false;
         }
