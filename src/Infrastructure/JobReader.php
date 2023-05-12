@@ -47,7 +47,6 @@ class JobReader
             $jobCollection->add(
                 $this->read(Filename::fromString($this->directory->toString().'/'.$file))
             );
-
         }
 
         return $jobCollection;

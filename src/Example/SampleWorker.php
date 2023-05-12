@@ -14,5 +14,4 @@ $processingStrategy = $factory->createForkingProcessingStrategy();
 
 $processingStrategy->getLogEmitter()->addSubscriber(new SimpleConsoleLogger());
 
-
 $processingStrategy->process(($factory->createJobReader())->retrieveAllJobs());

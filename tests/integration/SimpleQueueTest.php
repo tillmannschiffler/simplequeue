@@ -34,7 +34,9 @@ class SimpleQueueTest extends TestCase
 {
     private Factory $factory;
 
-    private string $jobId = '123abc';
+    private string $firstJobId = '123abc';
+
+    private string $secondJobId = '456def';
 
     public function setUp(): void
     {
@@ -44,6 +46,7 @@ class SimpleQueueTest extends TestCase
         $configurationMock->method('getInboxDirectory')->willReturn(Directory::fromString(__DIR__.'/../queue/inbox'));
         $configurationMock->method('getFinishedDirectory')->willReturn(Directory::fromString(__DIR__.'/../queue/finished'));
         $configurationMock->method('getFailedDirectory')->willReturn(Directory::fromString(__DIR__.'/../queue/failed'));
+        $configurationMock->method('getProgressDirectory')->willReturn(Directory::fromString(__DIR__.'/../queue/progress'));
         $configurationMock->method('getMaxForkChilds')->willReturn(1);
 
         $this->factory = new Factory($configurationMock);
@@ -51,30 +54,30 @@ class SimpleQueueTest extends TestCase
 
         $jobWriter->store(
             new Job(
-                Uuid::fromString($this->jobId),
+                Uuid::fromString($this->firstJobId),
                 JobType::fromString('sample'),
                 JobPayload::fromString('Hello you simple world!')
+            )
+        );
+
+        $jobWriter->store(
+            new Job(
+                Uuid::fromString($this->secondJobId),
+                JobType::fromString('sample'),
+                JobPayload::fromString('2nd Job')
             )
         );
     }
 
     public function testBiggerScope(): void
     {
-
         $consoleLoggerMock = $this->createMock(SimpleConsoleLogger::class);
+
         $processingStrategy = $this->factory->createForkingProcessingStrategy();
         $processingStrategy->getLogEmitter()->addSubscriber($consoleLoggerMock);
+
         $processingStrategy->process(($this->factory->createJobReader())->retrieveAllJobs());
 
-        $this->assertTrue(file_exists(__DIR__.'/../queue/finished/'.$this->jobId));
-    }
-
-    public function tearDown(): void
-    {
-        if (file_exists(__DIR__.'/../queue/inbox/'.$this->jobId)) unlink(__DIR__.'/../queue/inbox/'.$this->jobId);
-        if (file_exists(__DIR__.'/../queue/finished/'.$this->jobId)) unlink(__DIR__.'/../queue/finished/'.$this->jobId);
-        if (file_exists(__DIR__.'/../queue/failed/'.$this->jobId)) unlink(__DIR__.'/../queue/failed/'.$this->jobId);
-
-        parent::tearDown();
+        $this->assertTrue(file_exists(__DIR__.'/../queue/finished/'.$this->firstJobId));
     }
 }

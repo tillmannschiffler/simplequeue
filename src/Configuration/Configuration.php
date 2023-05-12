@@ -27,4 +27,9 @@ class Configuration
     {
         return Directory::fromString(__DIR__.'/../../queue/failed');
     }
+
+    public function getProgressDirectory(): Directory
+    {
+        return Directory::fromString(__DIR__.'/../../queue/progress');
+    }
 }

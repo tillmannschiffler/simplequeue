@@ -6,6 +6,7 @@ namespace simpleQueue\Event;
 
 use simpleQueue\Infrastructure\Logger\Subscriber;
 use simpleQueue\Job\Job;
+use Throwable;
 
 class LogEmitter
 {
@@ -43,9 +44,19 @@ class LogEmitter
         $this->publish(new StartedExecutor($job, $this->clock->now()));
     }
 
-    public function emitCouldNotFork()
+    public function emitCouldNotFork(): void
     {
         $this->publish(new CouldNotFork($this->clock->now()));
+    }
+
+    public function emitFailedJober(Job $job, Throwable $exception): void
+    {
+        $this->publish(new FailedJob($job, $exception, $this->clock->now()));
+    }
+
+    public function emitJobHasOutput(Job $job, string $jobOutput): void
+    {
+        $this->publish(new JobOutput($job, $jobOutput, $this->clock->now()));
     }
 
     private function publish(Event $event): void

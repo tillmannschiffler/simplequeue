@@ -14,17 +14,32 @@ class JobMover
 
     private Directory $failedDirectory;
 
-    public function __construct(Directory $inboxDirectory, Directory $finishedDirectory, Directory $failedDirectory)
-    {
+    private Directory $progressDirectory;
+
+    public function __construct(
+        Directory $inboxDirectory,
+        Directory $finishedDirectory,
+        Directory $failedDirectory,
+        Directory $progressDirectory,
+    ) {
         $this->inboxDirectory = $inboxDirectory;
         $this->finishedDirectory = $finishedDirectory;
         $this->failedDirectory = $failedDirectory;
+        $this->progressDirectory = $progressDirectory;
+    }
+
+    public function moveToProgress(Job $job): bool
+    {
+        return rename(
+            $this->inboxDirectory->toString().'/'.$job->getJobId()->toString(),
+            $this->progressDirectory->toString().'/'.$job->getJobId()->toString()
+        );
     }
 
     public function moveToFinished(Job $job): bool
     {
         return rename(
-            $this->inboxDirectory->toString().'/'.$job->getJobId()->toString(),
+            $this->progressDirectory->toString().'/'.$job->getJobId()->toString(),
             $this->finishedDirectory->toString().'/'.$job->getJobId()->toString()
         );
     }
@@ -32,7 +47,7 @@ class JobMover
     public function moveToFailed(Job $job): bool
     {
         return rename(
-            $this->inboxDirectory->toString().'/'.$job->getJobId()->toString(),
+            $this->progressDirectory->toString().'/'.$job->getJobId()->toString(),
             $this->failedDirectory->toString().'/'.$job->getJobId()->toString()
 
         );

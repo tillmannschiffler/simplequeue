@@ -28,10 +28,19 @@ class Executor
         try {
             $this->logEmitter->emitStartedExecutor($job);
             $processor = $this->processorLocator->getProcessorFor($job->getJobType());
+
+            $this->jobMover->moveToProgress($job);
+
+            ob_start();
             $processor->execute($job);
+            $jobEchos = ob_get_clean();
+            if ((is_string($jobEchos)) and ($jobEchos != '')) {
+                $this->logEmitter->emitJobHasOutput($job, $jobEchos);
+            }
+
             $this->jobMover->moveToFinished($job);
         } catch (\Throwable $exception) {
-            //TODO: log exception
+            $this->logEmitter->emitFailedJober($job, $exception);
             $this->jobMover->moveToFailed($job);
         }
     }

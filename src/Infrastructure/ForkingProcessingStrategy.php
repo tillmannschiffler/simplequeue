@@ -38,7 +38,6 @@ class ForkingProcessingStrategy implements ProcessingStrategy
                     unset($pidList[$pos]);
                     unset($joblist[$pId]);
                     break;
-
                 }
                 $this->logEmitter->emitWaitingForSlot();
                 sleep(1);

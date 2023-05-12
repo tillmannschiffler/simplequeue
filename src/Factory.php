@@ -13,7 +13,6 @@ use simpleQueue\Infrastructure\ForkingProcessingStrategy;
 use simpleQueue\Infrastructure\JobMover;
 use simpleQueue\Infrastructure\JobReader;
 use simpleQueue\Infrastructure\JobWriter;
-use simpleQueue\Infrastructure\SingleProcessingStrategy;
 use simpleQueue\Infrastructure\Uuid;
 use simpleQueue\Job\Job;
 use simpleQueue\Job\JobPayload;
@@ -28,7 +27,7 @@ class Factory
     {
         $this->configuraton = $configuraton;
     }
-    
+
     public function createForkingProcessingStrategy(): ForkingProcessingStrategy
     {
         $logEmitter = $this->createLogEmitter();
@@ -54,7 +53,8 @@ class Factory
         return new JobMover(
             $this->configuraton->getInboxDirectory(),
             $this->configuraton->getFinishedDirectory(),
-            $this->configuraton->getFailedDirectory()
+            $this->configuraton->getFailedDirectory(),
+            $this->configuraton->getProgressDirectory(),
         );
     }
 

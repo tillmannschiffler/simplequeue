@@ -23,7 +23,7 @@ class JobTypeTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         JobType::fromString('');
     }
-    
+
     public function testCanValidateString(): void
     {
         $this->assertTrue(JobType::isValid('foo'));
