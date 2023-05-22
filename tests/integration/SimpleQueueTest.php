@@ -34,10 +34,6 @@ class SimpleQueueTest extends TestCase
 {
     private Factory $factory;
 
-    private string $firstJobId = '123abc';
-
-    private string $secondJobId = '456def';
-
     public function setUp(): void
     {
         parent::setUp();
@@ -52,21 +48,17 @@ class SimpleQueueTest extends TestCase
         $this->factory = new Factory($configurationMock);
         $jobWriter = $this->factory->createJobWriter();
 
-        $jobWriter->store(
-            new Job(
-                Uuid::fromString($this->firstJobId),
-                JobType::fromString('sample'),
-                JobPayload::fromString('Hello you simple world!')
-            )
+        $firstJob = $this->factory->createJob(
+            JobType::fromString('sample'),
+            JobPayload::fromString('Hello you simple world!')
         );
-
-        $jobWriter->store(
-            new Job(
-                Uuid::fromString($this->secondJobId),
-                JobType::fromString('sample'),
-                JobPayload::fromString('2nd Job')
-            )
+        $secondJob = $this->factory->createJob(
+            JobType::fromString('sample'),
+            JobPayload::fromString('Hello you simple world number 2!')
         );
+        
+        $jobWriter->store($firstJob);
+        $jobWriter->store($secondJob);
     }
 
     public function testBiggerScope(): void
@@ -76,8 +68,14 @@ class SimpleQueueTest extends TestCase
         $processingStrategy = $this->factory->createForkingProcessingStrategy();
         $processingStrategy->getLogEmitter()->addSubscriber($consoleLoggerMock);
 
-        $processingStrategy->process(($this->factory->createJobReader())->retrieveAllJobs());
+        $jobs = $this->factory->createJobReader()->retrieveAllJobs();
+        
+        $processingStrategy->process($jobs);
 
-        $this->assertTrue(file_exists(__DIR__.'/../queue/finished/'.$this->firstJobId));
+        /** @var Job $job */
+        foreach ($jobs->all() as $job) 
+        {
+            $this->assertTrue(file_exists(__DIR__.'/../queue/finished/'. $job->getJobId()->toString()));    
+        }
     }
 }
