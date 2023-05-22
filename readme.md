@@ -15,13 +15,29 @@ If you come to a point in your project that needs asynchronous jobs, you often t
     Lines of Code (LOC)                           108002
 
 Thats right ... 650+ Files with over 100k Lines of code.
-Here comes this package that aims to be as small as possible but deliver the important features:
+
+Another Example from the "enqueue" package after require enqueue via composer:
+
+    Installing doctrine/cache
+    Installing doctrine/collections
+    Installing doctrine/event
+    Installing symfony/polyfill
+    Installing ramsey/collection
+    Installing brick/math
+    Installing ramsey/uuid
+    Installing queue-interop
+    Installing psr/cache
+    Installing doctrine/persistence
+    Installing doctrine/dbal
+    Installing enqueue/dbal
+
+These are huge dependency's and have to be maintained. Here comes this package that aims to be as small as possible but deliver the important features:
 - Asynchronous jobs.
 - No accidentally multiple executions of one job.
-- parallel jobs 
+- parallel jobs with max number of workers
 - event driven
 
-All this features could be archieved by using the most basic storage aka files system with some leverage of systemd.
+All this features could be archived by using the most basic storage aka files system with some leverage of systemd.
 
 Systemd uses unit files to configure daemons, and path units monitor files and directories for events. When a specified event occurs, a service unit with the same name is executed. I'll demonstrate this with an example. So the concept is to create files in a specific directory and let systemd handle the starting event condition and keep that one unit running to avoid ccidentally multiple executions of one job. 
 
@@ -85,3 +101,6 @@ To create a job, you have two options: you can either create the job manually an
 Once you have created the job, and  you can proceed to test the system by running /src/Example/SingleWorker.php. This will help you ensure that the setup is working as intended. If there are any issues, you can debug the system accordingly. With this simple setup process, you can get started with using this system in no time at all.
 
 Please feel free to mail me with ideas or bugs you found <tillmann.schiffler@gmail.com>
+
+## Monitoring ##
+As easy as it sounds: count the files in the directory. If this is not enough you can examine the journal of systemd to get a better view of jobs per second and so on.
