@@ -9,7 +9,6 @@ use simpleQueue\Configuration\Configuration;
 use simpleQueue\Factory;
 use simpleQueue\Infrastructure\Directory;
 use simpleQueue\Infrastructure\Logger\SimpleConsoleLogger;
-use simpleQueue\Infrastructure\Uuid;
 use simpleQueue\Job\Job;
 use simpleQueue\Job\JobPayload;
 use simpleQueue\Job\JobType;
