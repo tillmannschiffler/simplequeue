@@ -55,7 +55,7 @@ class SimpleQueueTest extends TestCase
             JobType::fromString('sample'),
             JobPayload::fromString('Hello you simple world number 2!')
         );
-        
+
         $jobWriter->store($firstJob);
         $jobWriter->store($secondJob);
     }
@@ -68,13 +68,12 @@ class SimpleQueueTest extends TestCase
         $processingStrategy->getLogEmitter()->addSubscriber($consoleLoggerMock);
 
         $jobs = $this->factory->createJobReader()->retrieveAllJobs();
-        
+
         $processingStrategy->process($jobs);
 
         /** @var Job $job */
-        foreach ($jobs->all() as $job) 
-        {
-            $this->assertTrue(file_exists(__DIR__.'/../queue/finished/'. $job->getJobId()->toString()));    
+        foreach ($jobs->all() as $job) {
+            $this->assertTrue(file_exists(__DIR__.'/../queue/finished/'.$job->getJobId()->toString()));
         }
     }
 }
