@@ -2,7 +2,7 @@
 Pragmatic approach to asyncron jobs for PHP8.x
 
 ## Idea ##
-This PHP project is for all the developers who want a queue system without installing huge dependencies.
+This PHP project is for all the developers who want a queue system without installing huge dependencies. This project is heavily inspired by the lecture [Daemons with PHP](https://www.youtube.com/watch?v=VIEqYmeJcMo) by Arne Blankerts from [thePHP.cc](https://thephp.cc/willkommen)   
 
 If you come to a point in your project that needs asynchronous jobs, you often tend to use big solutions like RabbitMQ or other systems. After realizing that such services have to be maintained and updated, you may search for simpler solutions like the queue package from the Laravel framework. A quick PHPloc will give you something like this:
     
@@ -39,7 +39,7 @@ These are huge dependency's and have to be maintained. Here comes this package t
 
 All this features could be archived by using the most basic storage aka files system with some leverage of systemd.
 
-Systemd uses unit files to configure daemons, and path units monitor files and directories for events. When a specified event occurs, a service unit with the same name is executed. I'll demonstrate this with an example. So the concept is to create files in a specific directory and let systemd handle the starting event condition and keep that one unit running to avoid ccidentally multiple executions of one job. 
+Systemd uses unit files to configure daemons, and path units monitor files and directories for events. When a specified event occurs, a service unit with the same name is executed. I'll demonstrate this with an example. So the concept is to create files in a specific directory and let systemd handle the starting event condition and keep that one unit running to avoid accidentally multiple executions of one job. 
 
 ## Requirements ##
 - Linux operating system with systemd
@@ -103,4 +103,16 @@ Once you have created the job, and  you can proceed to test the system by runnin
 Please feel free to mail me with ideas or bugs you found <tillmann.schiffler@gmail.com>
 
 ## Monitoring ##
-As easy as it sounds: count the files in the directory. If this is not enough you can examine the journal of systemd to get a better view of jobs per second and so on.
+Since the whole idea to use the file system as backend storage for our jobs. The monitoring is as easy as it sounds. 
+
+Get a count of jobs just count the files in the corresponding directorys like:  
+ 
+    ls | wc -l
+
+in the inbox directory and so on.
+
+Since this project is using systemd as leverage we can use journal log to optain statistics per time range:
+
+    journalctl -u SimpleQueue.path --since "1 minute ago" | grep "Started SimpleQueue.path" | wc -l
+
+To get a throughput of jobs there is also a simple and pragmatic method - use the event subscriber on the "emitFinishedJob" event and write that event to journal of systemd. After that you can use the command above to determine the jobs done per time range. 
