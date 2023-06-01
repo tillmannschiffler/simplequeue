@@ -84,23 +84,12 @@ class JobReader
             throw new \InvalidArgumentException('Job File could not be read.');
         }
 
-        $decodetContent = json_decode($content);
-        if (is_null($decodetContent)) {
-            throw new JobInfrastructureException(json_last_error_msg());
-        }
-
-        if (! isset($decodetContent->jobId)) {
-            throw new JobInfrastructureException('Missing job id in job file.');
-        }
-
-        if (! isset($decodetContent->jobPayload)) {
-            throw new JobInfrastructureException('Missing payload id in job file.');
-        }
+        $json = Json::fromString($content);
 
         return new Job(
-            Uuid::fromString($decodetContent->jobId),
+            Uuid::fromString($json->getJobId()),
             JobType::fromString('sample'),
-            JobPayload::fromString($decodetContent->jobPayload)
+            JobPayload::fromString($json->getJobPayload())
         );
     }
 }
