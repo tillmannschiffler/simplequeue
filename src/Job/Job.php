@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace simpleQueue\Job;
 
+use simpleQueue\Infrastructure\Json;
 use simpleQueue\Infrastructure\Uuid;
 
 class Job
@@ -38,11 +39,9 @@ class Job
 
     public function toJson(): string
     {
-        return json_encode(
-            [
-                'jobId' => $this->jobId->toString(),
-                'jobPayload' => $this->jobPayload->toString(),
-            ]
-        );
+        return Json::encode([
+            'jobId' => $this->jobId->toString(),
+            'jobPayload' => $this->jobPayload->toString(),
+        ]);
     }
 }

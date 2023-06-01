@@ -13,6 +13,11 @@ class Json
         return new self($possibleJson);
     }
 
+    public static function encode(mixed $data): string
+    {
+        return json_encode($data);
+    }
+
     private function __construct(string $possibleJson)
     {
         $this->ensureJsonIsValid($possibleJson);
