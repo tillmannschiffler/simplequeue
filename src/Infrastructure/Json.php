@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace simpleQueue\Infrastructure;
 
 class Json
@@ -14,14 +16,14 @@ class Json
     private function __construct(string $possibleJson)
     {
         $this->ensureJsonIsValid($possibleJson);
-        
+
         $this->data = json_decode($possibleJson);
     }
-    
-    private function ensureJsonIsValid(string $possibleJson) : void
+
+    private function ensureJsonIsValid(string $possibleJson): void
     {
         $decodetContent = json_decode($possibleJson);
-        
+
         if (is_null($decodetContent)) {
             throw new JobInfrastructureException(json_last_error_msg());
         }
@@ -33,7 +35,7 @@ class Json
         if (! isset($decodetContent->jobPayload)) {
             throw new JobInfrastructureException('Missing payload id in job file.');
         }
-        
+
         if (! is_string($decodetContent->jobId)) {
             throw new JobInfrastructureException('job id is not a string.');
         }
@@ -41,20 +43,13 @@ class Json
         if (! is_string($decodetContent->jobPayload)) {
             throw new JobInfrastructureException('jobpayload is not a string.');
         }
-        
     }
 
-    /**
-     * @return string
-     */
     public function getJobId(): string
     {
         return $this->data->jobId;
     }
 
-    /**
-     * @return string
-     */
     public function getJobPayload(): string
     {
         return $this->data->jobPayload;
