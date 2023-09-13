@@ -58,3 +58,6 @@ jobs:
 
       - name: "Run laravel/pint"
         run: "vendor/bin/pint --ansi --test -v"
+
+      - name: "Run sebastianbergmann/phpunit"
+        run: "vendor/bin/phpunit"
