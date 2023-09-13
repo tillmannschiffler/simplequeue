@@ -31,8 +31,8 @@ class JsonTest extends TestCase
             Json::class,
             Json::fromString(json_encode([
                 'jobId' => '1',
-                'jobPayload' => 'foo'
-            ]))            
-        );  
+                'jobPayload' => 'foo',
+            ]))
+        );
     }
 }

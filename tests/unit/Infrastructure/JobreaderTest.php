@@ -14,7 +14,7 @@ class JobreaderTest extends TestCase
     public function testCanCreate(): void
     {
         $mockDir = $this->createMock(Directory::class);
-        
+
         $this->assertInstanceOf(
             JobReader::class,
             new JobReader($mockDir)
@@ -25,10 +25,10 @@ class JobreaderTest extends TestCase
     {
         $mockDir = $this->createMock(Directory::class);
         $mockDir->expects($this->atLeastOnce())->method('toString')->willReturn(
-            __DIR__ . '/../Fixtures/'
+            __DIR__.'/../Fixtures/'
         );
 
-        $this->expectException(\InvalidArgumentException::class); 
+        $this->expectException(\InvalidArgumentException::class);
         (new JobReader($mockDir))->retrieveOldest();
     }
 }
