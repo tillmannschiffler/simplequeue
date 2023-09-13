@@ -1,4 +1,7 @@
 # Simple Queue #
+
+[![Integrate](https://github.com/tillmannschiffler/simplequeue/actions/workflows/integrate.yaml/badge.svg)](https://github.com/tillmannschiffler/simplequeue/actions/workflows/integrate.yaml)
+
 Pragmatic approach to asyncron jobs for PHP8.x
 
 ## Idea ##
