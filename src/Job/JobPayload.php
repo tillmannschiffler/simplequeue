@@ -31,11 +31,6 @@ class JobPayload
 
     public static function isValid(string $jobPayload): bool
     {
-        //TODO: remove or implement validation rules
-        if (! is_string($jobPayload)) {
-            return false;
-        }
-
         return true;
     }
 

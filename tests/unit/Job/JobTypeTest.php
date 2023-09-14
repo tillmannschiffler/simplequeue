@@ -33,4 +33,10 @@ class JobTypeTest extends TestCase
     {
         $this->assertFalse(JobType::isValid(''));
     }
+
+    public function testToString(): void
+    {
+        $jobType = JobType::fromString('foo');
+        $this->assertEquals('foo', $jobType->toString());
+    }
 }
