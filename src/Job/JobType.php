@@ -31,11 +31,6 @@ class JobType
 
     public static function isValid(string $jobType): bool
     {
-        //TODO: remove or implement validation rules
-        if (! is_string($jobType)) {
-            return false;
-        }
-
         if (strlen($jobType) == 0) {
             return false;
         }
