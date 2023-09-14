@@ -2,7 +2,6 @@
 
 namespace unit\Job;
 
-
 use PHPUnit\Framework\TestCase;
 use simpleQueue\Infrastructure\Uuid;
 use simpleQueue\Job\Job;
@@ -37,10 +36,10 @@ class JobTest extends TestCase
         $jobTypePayloadMock = $this->createMock(JobPayload::class);
 
         $job = new Job(
-                $uuidMock,
-                $jobTypeMock,
-                $jobTypePayloadMock
-            );
+            $uuidMock,
+            $jobTypeMock,
+            $jobTypePayloadMock
+        );
 
         $this->assertInstanceOf(
             Uuid::class,

@@ -5,8 +5,6 @@ namespace unit\Infrastructure;
 use PHPUnit\Framework\TestCase;
 use simpleQueue\Infrastructure\JobInfrastructureException;
 use simpleQueue\Infrastructure\Json;
-use simpleQueue\Job\JobId;
-use simpleQueue\Job\JobPayload;
 
 /**
  * @covers \simpleQueue\Infrastructure\Json
@@ -41,9 +39,9 @@ class JsonTest extends TestCase
     public function testCanRetrieveValueObjects(): void
     {
         $job = Json::fromString(json_encode([
-                'jobId' => '1',
-                'jobPayload' => 'foo',
-            ]));
+            'jobId' => '1',
+            'jobPayload' => 'foo',
+        ]));
 
         $this->assertEquals('1', $job->getJobId());
         $this->assertEquals('foo', $job->getJobPayload());

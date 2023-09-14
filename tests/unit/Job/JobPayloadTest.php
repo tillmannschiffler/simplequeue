@@ -5,7 +5,6 @@ namespace unit\Job;
 use PHPUnit\Framework\TestCase;
 use simpleQueue\Job\JobPayload;
 
-
 /**
  * @covers \simpleQueue\Job\JobPayload
  */
