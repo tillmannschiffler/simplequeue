@@ -41,6 +41,7 @@ class Job
     {
         return Json::encode([
             'jobId' => $this->jobId->toString(),
+            'jobType' => $this->jobType->toString(),
             'jobPayload' => $this->jobPayload->toString(),
         ]);
     }

@@ -27,32 +27,45 @@ class Json
 
     private function ensureJsonIsValid(string $possibleJson): void
     {
-        $decodetContent = json_decode($possibleJson);
+        $decodedContent = json_decode($possibleJson);
 
-        if (is_null($decodetContent)) {
+        if (is_null($decodedContent)) {
             throw new JobInfrastructureException(json_last_error_msg());
         }
 
-        if (! isset($decodetContent->jobId)) {
+        if (! isset($decodedContent->jobId)) {
             throw new JobInfrastructureException('Missing job id in job file.');
         }
 
-        if (! isset($decodetContent->jobPayload)) {
-            throw new JobInfrastructureException('Missing payload id in job file.');
+        if (! isset($decodedContent->jobType)) {
+            throw new JobInfrastructureException('Missing job type in job file.');
         }
 
-        if (! is_string($decodetContent->jobId)) {
+        if (! isset($decodedContent->jobPayload)) {
+            throw new JobInfrastructureException('Missing payload in job file.');
+        }
+
+        if (! is_string($decodedContent->jobId)) {
             throw new JobInfrastructureException('job id is not a string.');
         }
 
-        if (! is_string($decodetContent->jobPayload)) {
-            throw new JobInfrastructureException('jobpayload is not a string.');
+        if (! is_string($decodedContent->jobType)) {
+            throw new JobInfrastructureException('job type is not a string.');
+        }
+
+        if (! is_string($decodedContent->jobPayload)) {
+            throw new JobInfrastructureException('job payload is not a string.');
         }
     }
 
     public function getJobId(): string
     {
         return $this->data->jobId;
+    }
+
+    public function getJobType(): string
+    {
+        return $this->data->jobType;
     }
 
     public function getJobPayload(): string

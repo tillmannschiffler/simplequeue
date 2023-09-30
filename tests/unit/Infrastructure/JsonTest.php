@@ -31,6 +31,7 @@ class JsonTest extends TestCase
             Json::class,
             Json::fromString(json_encode([
                 'jobId' => '1',
+                'jobType' => 'bar',
                 'jobPayload' => 'foo',
             ]))
         );
@@ -40,10 +41,12 @@ class JsonTest extends TestCase
     {
         $job = Json::fromString(json_encode([
             'jobId' => '1',
+            'jobType' => 'bar',
             'jobPayload' => 'foo',
         ]));
 
         $this->assertEquals('1', $job->getJobId());
+        $this->assertEquals('bar', $job->getJobType());
         $this->assertEquals('foo', $job->getJobPayload());
     }
 
@@ -57,15 +60,26 @@ class JsonTest extends TestCase
     {
         $this->expectException(JobInfrastructureException::class);
         Json::fromString(json_encode([
+            'jobType' => 'bar',
             'jobPayload' => 'foo',
         ]));
     }
 
-    public function testCanThrowWithInvalidJobpayload(): void
+    public function testCanThrowWithInvalidJobType(): void
     {
         $this->expectException(JobInfrastructureException::class);
         Json::fromString(json_encode([
             'jobId' => '1',
+            'jobPayload' => 'foo',
+        ]));
+    }
+
+    public function testCanThrowWithInvalidJobPayload(): void
+    {
+        $this->expectException(JobInfrastructureException::class);
+        Json::fromString(json_encode([
+            'jobId' => '1',
+            'jobType' => 'bar',
         ]));
     }
 
@@ -74,6 +88,17 @@ class JsonTest extends TestCase
         $this->expectException(JobInfrastructureException::class);
         Json::fromString(json_encode([
             'jobId' => 1,
+            'jobType' => 'bar',
+            'jobPayload' => 'foo',
+        ]));
+    }
+
+    public function testCanThrowWithJobTypeNotBeeingAString(): void
+    {
+        $this->expectException(JobInfrastructureException::class);
+        Json::fromString(json_encode([
+            'jobId' => '1',
+            'jobType' => 2,
             'jobPayload' => 'foo',
         ]));
     }
@@ -83,6 +108,7 @@ class JsonTest extends TestCase
         $this->expectException(JobInfrastructureException::class);
         Json::fromString(json_encode([
             'jobId' => '1',
+            'jobType' => 'bar',
             'jobPayload' => 0,
         ]));
     }

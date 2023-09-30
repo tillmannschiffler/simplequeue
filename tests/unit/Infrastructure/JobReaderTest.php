@@ -9,7 +9,7 @@ use simpleQueue\Infrastructure\JobReader;
 /**
  * @covers \simpleQueue\Infrastructure\JobReader
  */
-class JobreaderTest extends TestCase
+class JobReaderTest extends TestCase
 {
     public function testCanCreate(): void
     {

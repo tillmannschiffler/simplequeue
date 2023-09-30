@@ -88,7 +88,7 @@ class JobReader
 
         return new Job(
             Uuid::fromString($json->getJobId()),
-            JobType::fromString('sample'),
+            JobType::fromString($json->getJobType()),
             JobPayload::fromString($json->getJobPayload())
         );
     }
