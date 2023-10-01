@@ -8,14 +8,14 @@ class JobOutput implements Event
 {
     private Job $job;
 
-    private string $joboutput;
+    private string $jobOutput;
 
     private \DateTimeImmutable $dateTimeImmutable;
 
-    public function __construct(Job $job, string $joboutput, \DateTimeImmutable $dateTimeImmutable)
+    public function __construct(Job $job, string $jobOutput, \DateTimeImmutable $dateTimeImmutable)
     {
         $this->job = $job;
-        $this->joboutput = $joboutput;
+        $this->jobOutput = $jobOutput;
         $this->dateTimeImmutable = $dateTimeImmutable;
     }
 
@@ -24,8 +24,13 @@ class JobOutput implements Event
         return $this->job;
     }
 
-    public function getJoboutput(): string
+    public function getJobOutput(): string
     {
-        return $this->joboutput;
+        return $this->jobOutput;
+    }
+
+    public function getDateTimeImmutable(): \DateTimeImmutable
+    {
+        return $this->dateTimeImmutable;
     }
 }
