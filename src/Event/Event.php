@@ -6,4 +6,5 @@ namespace simpleQueue\Event;
 
 interface Event
 {
+    public function getDateTimeImmutable(): \DateTimeImmutable;
 }
