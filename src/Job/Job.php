@@ -5,17 +5,16 @@ declare(strict_types=1);
 namespace simpleQueue\Job;
 
 use simpleQueue\Infrastructure\Json;
-use simpleQueue\Infrastructure\Uuid;
 
 class Job
 {
-    private Uuid $jobId;
+    private JobId $jobId;
 
     private JobPayload $jobPayload;
 
     private JobType $jobType;
 
-    public function __construct(Uuid $jobId, JobType $jobType, JobPayload $jobPayload)
+    public function __construct(JobId $jobId, JobType $jobType, JobPayload $jobPayload)
     {
         $this->jobId = $jobId;
         $this->jobPayload = $jobPayload;
@@ -27,7 +26,7 @@ class Job
         return $this->jobType;
     }
 
-    public function getJobId(): Uuid
+    public function getJobId(): JobId
     {
         return $this->jobId;
     }

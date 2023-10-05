@@ -3,8 +3,8 @@
 namespace unit\Job;
 
 use PHPUnit\Framework\TestCase;
-use simpleQueue\Infrastructure\Uuid;
 use simpleQueue\Job\Job;
+use simpleQueue\Job\JobId;
 use simpleQueue\Job\JobPayload;
 use simpleQueue\Job\JobType;
 
@@ -15,14 +15,14 @@ class JobTest extends TestCase
 {
     public function testCanCreate(): void
     {
-        $uuidMock = $this->createMock(Uuid::class);
+        $jobIdMock = $this->createMock(JobId::class);
         $jobTypeMock = $this->createMock(JobType::class);
         $jobTypePayloadMock = $this->createMock(JobPayload::class);
 
         $this->assertInstanceOf(
             Job::class,
             new Job(
-                $uuidMock,
+                $jobIdMock,
                 $jobTypeMock,
                 $jobTypePayloadMock
             )
@@ -31,18 +31,18 @@ class JobTest extends TestCase
 
     public function testCanRetrieveValueObjects(): void
     {
-        $uuidMock = $this->createMock(Uuid::class);
+        $jobIdMock = $this->createMock(JobId::class);
         $jobTypeMock = $this->createMock(JobType::class);
         $jobTypePayloadMock = $this->createMock(JobPayload::class);
 
         $job = new Job(
-            $uuidMock,
+            $jobIdMock,
             $jobTypeMock,
             $jobTypePayloadMock
         );
 
         $this->assertInstanceOf(
-            Uuid::class,
+            JobId::class,
             $job->getJobId()
         );
 

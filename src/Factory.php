@@ -15,6 +15,7 @@ use simpleQueue\Infrastructure\JobReader;
 use simpleQueue\Infrastructure\JobWriter;
 use simpleQueue\Infrastructure\Uuid;
 use simpleQueue\Job\Job;
+use simpleQueue\Job\JobId;
 use simpleQueue\Job\JobPayload;
 use simpleQueue\Job\JobType;
 use simpleQueue\Job\ProcessorLocator;
@@ -71,7 +72,7 @@ class Factory
     public function createJob(JobType $jobType, JobPayload $jobPayload): Job
     {
         return new Job(
-            Uuid::create(),
+            JobId::fromString(Uuid::create()->toString()),
             $jobType,
             $jobPayload
         );

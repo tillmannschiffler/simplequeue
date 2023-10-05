@@ -6,6 +6,7 @@ namespace simpleQueue\Infrastructure;
 
 use simpleQueue\Job\Job;
 use simpleQueue\Job\JobCollection;
+use simpleQueue\Job\JobId;
 use simpleQueue\Job\JobPayload;
 use simpleQueue\Job\JobType;
 
@@ -87,7 +88,7 @@ class JobReader
         $json = Json::fromString($content);
 
         return new Job(
-            Uuid::fromString($json->getJobId()),
+            JobId::fromString($json->getJobId()),
             JobType::fromString($json->getJobType()),
             JobPayload::fromString($json->getJobPayload())
         );
