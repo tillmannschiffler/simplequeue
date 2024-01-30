@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="5.20.0@3f284e96c9d9be6fe6b15c79416e1d1903dcfef4">
+  <file src="src/Infrastructure/Directory.php">
+    <TypeDoesNotContainType>
+      <code>is_string($directory)</code>
+    </TypeDoesNotContainType>
+  </file>
+  <file src="src/Infrastructure/Filename.php">
+    <TypeDoesNotContainType>
+      <code>is_string($filename)</code>
+    </TypeDoesNotContainType>
+  </file>
+  <file src="src/Infrastructure/Logger/SimpleConsoleLogger.php">
+    <ForbiddenCode>
+      <code>var_dump($event)</code>
+    </ForbiddenCode>
+  </file>
+  <file src="src/Job/JobId.php">
+    <TypeDoesNotContainType>
+      <code>is_string($jobId)</code>
+    </TypeDoesNotContainType>
+  </file>
+</files>
