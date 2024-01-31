@@ -11,7 +11,7 @@ require_once __DIR__.'/../../vendor/autoload.php';
 $factory = new Factory(new Configuration());
 $jobWriter = $factory->createJobWriter();
 
-for ($i = 0; $i <= 10; $i++) {
+for ($i = 0; $i < 10; $i++) {
     $jobWriter->store(
         $factory->createJob(
             JobType::fromString('sample'),
