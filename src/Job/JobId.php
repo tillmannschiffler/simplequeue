@@ -32,10 +32,6 @@ class JobId
     public static function isValid(string $jobId): bool
     {
         //TODO: remove or implement validation rules
-        if (! is_string($jobId)) {
-            return false;
-        }
-
         return true;
     }
 

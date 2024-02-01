@@ -32,10 +32,6 @@ class Filename
     public static function isValid(string $filename): bool
     {
         //TODO: remove or implement validation rules
-        if (! is_string($filename)) {
-            return false;
-        }
-
         return true;
     }
 
