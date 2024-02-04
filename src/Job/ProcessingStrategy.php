@@ -4,7 +4,12 @@ declare(strict_types=1);
 
 namespace simpleQueue\Job;
 
+use Traversable;
+
 interface ProcessingStrategy
 {
-    public function process(JobCollection $jobs): void;
+    /**
+     * @param  Traversable<Job>  $jobs
+     */
+    public function process(Traversable $jobs): void;
 }
