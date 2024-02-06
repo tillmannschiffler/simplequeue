@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace integration;
 
+use ArrayIterator;
 use PHPUnit\Framework\TestCase;
 use simpleQueue\Configuration\Configuration;
 use simpleQueue\Factory;
 use simpleQueue\Infrastructure\Directory;
 use simpleQueue\Infrastructure\Logger\SimpleConsoleLogger;
-use simpleQueue\Job\Job;
 use simpleQueue\Job\JobPayload;
 use simpleQueue\Job\JobType;
 
@@ -18,7 +18,6 @@ use simpleQueue\Job\JobType;
  * @covers \simpleQueue\Infrastructure\ForkingProcessingStrategy
  * @covers \simpleQueue\Infrastructure\Executor
  * @covers \simpleQueue\Event\LogEmitter
- * @covers \simpleQueue\Job\JobCollection
  * @covers \simpleQueue\Infrastructure\JobMover
  * @covers \simpleQueue\Infrastructure\JobReader
  * @covers \simpleQueue\Infrastructure\Directory
@@ -67,12 +66,11 @@ class SimpleQueueTest extends TestCase
         $processingStrategy = $this->factory->createForkingProcessingStrategy();
         $processingStrategy->getLogEmitter()->addSubscriber($consoleLoggerMock);
 
-        $jobs = $this->factory->createJobReader()->retrieveAllJobs();
+        $jobs = iterator_to_array($this->factory->createJobReader()->retrieveAllJobs());
 
-        $processingStrategy->process($jobs);
+        $processingStrategy->process(new ArrayIterator($jobs));
 
-        /** @var Job $job */
-        foreach ($jobs->all() as $job) {
+        foreach ($jobs as $job) {
             $this->assertTrue(file_exists(__DIR__.'/../queue/finished/'.$job->getJobId()->toString()));
         }
     }

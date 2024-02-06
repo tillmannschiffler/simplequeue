@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace simpleQueue\Infrastructure;
 
+use Generator;
 use simpleQueue\Job\Job;
-use simpleQueue\Job\JobCollection;
 use simpleQueue\Job\JobId;
 use simpleQueue\Job\JobPayload;
 use simpleQueue\Job\JobType;
@@ -36,21 +36,18 @@ class JobReader
         return $this->read($jobFile);
     }
 
-    public function retrieveAllJobs(): JobCollection
+    /**
+     * @return Generator<Job>
+     */
+    public function retrieveAllJobs(): Generator
     {
-        $jobCollection = new JobCollection();
-
         foreach (scandir($this->directory->toString()) as $file) {
             if (in_array($file, $this->ignoreFiles)) {
                 continue;
             }
 
-            $jobCollection->add(
-                $this->read(Filename::fromString($this->directory->toString().'/'.$file))
-            );
+            yield $this->read(Filename::fromString($this->directory->toString().'/'.$file));
         }
-
-        return $jobCollection;
     }
 
     private function oldestFromDir(): ?Filename
