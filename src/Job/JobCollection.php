@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace simpleQueue\Job;
 
+use ArrayIterator;
+
 class JobCollection implements JobIterator
 {
     private array $items = [];
 
     private int $position = 0;
 
-    public function add(Job $job)
+    public function add(Job $job): void
     {
         $this->items[] = $job;
     }
@@ -23,9 +25,9 @@ class JobCollection implements JobIterator
         return $this->items;
     }
 
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
-        return new \ArrayIterator($this->items);
+        return new ArrayIterator($this->items);
     }
 
     public function current(): mixed
