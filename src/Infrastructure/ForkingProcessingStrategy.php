@@ -27,7 +27,7 @@ class ForkingProcessingStrategy implements ProcessingStrategy
     {
         $pidList = [];
         $joblist = [];
-        foreach ($jobs->all() as $job) {
+        foreach ($jobs as $job) {
             while (count($pidList) === $this->maxForks) {
                 foreach ($pidList as $pos => $pId) {
                     $code = pcntl_waitpid($pId, $status, WNOHANG);
