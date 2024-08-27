@@ -49,6 +49,9 @@ Systemd uses unit files to configure daemons, and path units monitor files and d
 - The minimum required PHP version is PHP 8.0
  
 ## Installation ##
+
+### Systemwide Installation
+
 #### Step 1/2 ###
 
 To use this library install with:
@@ -97,6 +100,66 @@ And of course start it:
     
     systemctl start SimpleQueue.path SimpleQueue.service
 
+### Per-User Installation For Development
+
+In production, you will probably install the queue service in the global systemd configuration.
+For development, you can install it in the user's systemd configuration instead, which also doesn't require root privileges.
+The following details the steps required:
+
+1. Create `systemd` Configuration Dir
+
+   ```shell
+   mkdir -p ~/.config/systemd/user
+   ```
+
+2. Install Configuration Files
+
+   Install the below files, with `<GIT_ROOT>` replaced by the absolute path
+   to where the sources are checked out.
+
+   File: ~/.config/systemd/user/SimpleQueue.path
+
+   ```raw
+   [Unit]
+   Description=Monitor for changes in Queue Inbox Path
+
+   [Path]
+   # NOTE: adjust path to the queue/inbox directory
+   DirectoryNotEmpty=<GIT_ROOT>/queue/inbox
+   Unit=SimpleQueue.service
+
+   [Install]
+   WantedBy=multi-user.target
+   ```
+
+   File: ~/.config/systemd/user/SimpleQueue.service
+
+   ```raw
+   [Unit]
+   Description=Worker Starter for the Queue/Job handling
+
+   [Service]
+   Type=simple
+   # NOTE: adjust path to the worker here
+   ExecStart=/usr/bin/php <GIT_ROOT>/src/Example/SampleWorker.php
+
+   [Install]
+   WantedBy=multi-user.target
+   ```
+
+3. Start The Inbox Monitor
+
+   ```shell
+   systemctl --user daemon-reload
+   systemctl --user start SimpleQueue.path
+   ```
+
+   You can check `journalctl --user` now, it should contain a message that the inbox monitor was started.
+
+You can follow the `systemd` logs to watch the queue in operation.
+Just keep `journalctl --follow --user --unit SimpleQueue.service` running in a terminal.
+In order to test the queue, use `php src/Example/CreateSomeJobs.php 1`, which creates a single job.
+In the systemd logs, you should receive four event entries, `StartedJob`, `StartedExecution`, `JobOutput`, and `FinishedJob`.
 
 ## Running ##
 To create a job, you have two options: you can either create the job manually and move it to /queue/inbox, or you can make use of the helper file located at /src/Example/CreateSomeJobs.php. This file can help you generate jobs quickly and easily.
