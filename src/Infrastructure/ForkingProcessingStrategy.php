@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace simpleQueue\Infrastructure;
 
 use simpleQueue\Event\LogEmitter;
-use simpleQueue\Job\JobCollection;
+use simpleQueue\Job\Job;
 use simpleQueue\Job\ProcessingStrategy;
+use Traversable;
 
 class ForkingProcessingStrategy implements ProcessingStrategy
 {
@@ -23,11 +24,14 @@ class ForkingProcessingStrategy implements ProcessingStrategy
         $this->logEmitter = $logEmitter;
     }
 
-    public function process(JobCollection $jobs): void
+    /**
+     * @param  Traversable<Job>  $jobs
+     */
+    public function process(Traversable $jobs): void
     {
         $pidList = [];
         $joblist = [];
-        foreach ($jobs->all() as $job) {
+        foreach ($jobs as $job) {
             while (count($pidList) === $this->maxForks) {
                 foreach ($pidList as $pos => $pId) {
                     $code = pcntl_waitpid($pId, $status, WNOHANG);
