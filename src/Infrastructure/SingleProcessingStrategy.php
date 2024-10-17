@@ -18,7 +18,7 @@ class SingleProcessingStrategy implements ProcessingStrategy
 
     public function process(JobCollection $jobs): void
     {
-        foreach ($jobs->all() as $job) {
+        foreach ($jobs as $job) {
             $this->executor->process($job);
         }
     }
