@@ -10,7 +10,7 @@ class Configuration
 {
     protected string $basePath;
 
-    public function __construct(string $basePath = null)
+    public function __construct(?string $basePath = null)
     {
         if ($basePath === null) {
             $basePath = dirname(__DIR__, 2);
